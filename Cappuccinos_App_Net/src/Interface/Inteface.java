@@ -4,19 +4,86 @@
  */
 package Interface;
 import Structures.Capuccino;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author PC
  */
 public class Inteface extends javax.swing.JPanel {
-
+    public  ArrayList<Capuccino> capuccinoList = new ArrayList<>();
     /**
      * Creates new form Inteface
+     * @param capuccinoList
      */
-    public Inteface() {
+    public Inteface( ) {
+        this.setName("Interface");
         initComponents();
+        leerData();
+        showTable();
     }
+private void showTable() {
+    DefaultTableModel model = (DefaultTableModel) TableContenido.getModel();
+    model.setRowCount(0); // Limpiar la tabla
+        
+    if (!capuccinoList.isEmpty()) {
+        for (Capuccino capu : capuccinoList) {
+            String estado = capu.getEstado() == 0 ? "Debiente" : "Cancelado";
+            model.addRow(new Object[]{
+                capu.getFecha(),
+                capu.getCapuccinoRealizado(),
+                capu.getCarry(),
+                capu.getTotal(),
+                String.format("Q.%.2f", capu.getTotalPagar()),
+                estado
+            });
+        }
+    }
+}
 
+
+
+    private void leerData(){ 
+        // cpR,  carry,  total,  totalPag,  fecha, estado
+        String filePath = "src/Data/dataCappuccinos.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {          
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Separar la línea por comas
+                int cpR = 0, carry = 0, estado = 0,total = 0;
+                double toPay = 0.0;
+                String fecha = "";            
+                String[] values = line.split(",");
+
+                // Asignar los valores a las variables
+                fecha = values[0];
+                cpR = Integer.parseInt(values[1]);
+                carry = Integer.parseInt(values[2]);
+                total = Integer.parseInt(values[3]);
+                toPay = Double.parseDouble(values[4]);
+                estado = Integer.parseInt(values[5]);
+                // Imprimir los valores leídos
+               /*
+                System.out.println("Fecha: " + fecha);
+                System.out.println("cpR: " + cpR);
+                System.out.println("Carry: " + carry);
+                System.out.println("Total: " + total);
+                System.out.println("To Pay: " + toPay);
+                System.out.println("Estado: " + estado);
+                System.out.println("************************************");
+                */
+               // int cpR, int carry, int total, double totalPag, String fecha,int estado
+                Capuccino cpAdd = new Capuccino(cpR,carry,total,toPay,fecha,estado);
+                capuccinoList.add(cpAdd);                
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo" + e);
+        }         
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,19 +93,64 @@ public class Inteface extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuBar1 = new java.awt.MenuBar();
+        menu1 = new java.awt.Menu();
+        menu2 = new java.awt.Menu();
+        scrollPane2 = new java.awt.ScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TableContenido = new javax.swing.JTable();
+
+        menu1.setLabel("File");
+        menuBar1.add(menu1);
+
+        menu2.setLabel("Edit");
+        menuBar1.add(menu2);
+
+        TableContenido.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Default", "Default", "Default", "Default", "Q.0.00", "Default", null}
+            },
+            new String [] {
+                "Fecha", "Realizados", "Carry", "Total Realizados", "Total a Pagar", "Estado", "Editar"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(TableContenido);
+
+        scrollPane2.add(jScrollPane1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(72, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableContenido;
+    private javax.swing.JScrollPane jScrollPane1;
+    private java.awt.Menu menu1;
+    private java.awt.Menu menu2;
+    private java.awt.MenuBar menuBar1;
+    private java.awt.ScrollPane scrollPane2;
     // End of variables declaration//GEN-END:variables
 }

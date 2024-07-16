@@ -110,7 +110,7 @@ public class Capuccino {
     }
     
   public String toWriteFile(){ 
-      String salida = this.fecha + "," +String.valueOf(this.capuccinoRealizado) + "," + String.valueOf(this.carry)+","+String.valueOf(this.total)+","+String.valueOf(this.totalPagar)+","+String.valueOf(this.estado);
+      String salida = this.fecha + "," +String.valueOf(this.capuccinoRealizado) + "," + String.valueOf(this.carry)+","+String.valueOf(this.total)+","+String.valueOf(this.totalPagar)+","+String.valueOf(this.estado)+"\n";
       return salida;
   }
    

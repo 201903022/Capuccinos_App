@@ -9,12 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
-
+import javax.swing.JFrame;
 /**
  *
  * @author PC
@@ -25,10 +26,13 @@ public class MainIterface extends javax.swing.JFrame {
      * Creates new form MainIterface
      */
     public MainIterface() {
+        setTitle("Main App Cappuccino");
         initComponents();
+         leerData();
         ButtonAgregar.addActionListener((ActionEvent e) -> {
             mostrarCapuccinosYFecha();
         });        
+        
     }
     
     /**
@@ -49,7 +53,8 @@ public class MainIterface extends javax.swing.JFrame {
         BoxEstado = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        DashboaradMenu = new javax.swing.JMenuItem();
+        EditarMenu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -72,8 +77,21 @@ public class MainIterface extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Ver Totales");
-        jMenu1.add(jMenuItem1);
+        DashboaradMenu.setText("Dasboard");
+        DashboaradMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DashboaradMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(DashboaradMenu);
+
+        EditarMenu.setText("Editar");
+        EditarMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(EditarMenu);
 
         jMenuBar1.add(jMenu1);
 
@@ -130,6 +148,16 @@ public class MainIterface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_BoxEstadoActionPerformed
 
+    private void DashboaradMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashboaradMenuActionPerformed
+        // TODO add your handling code here:
+        OpenShowTable();
+    }//GEN-LAST:event_DashboaradMenuActionPerformed
+
+    private void EditarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarMenuActionPerformed
+        // TODO add your handling code here:
+        OpenEditaWindows();
+    }//GEN-LAST:event_EditarMenuActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -137,7 +165,7 @@ public class MainIterface extends javax.swing.JFrame {
     private void mostrarCapuccinosYFecha() {
         try {
             //leer archivo 
-             leerData();
+            
             // int carry = 0; 
            //  int totalRealizados = 0; 
           //   double toPayr = 0.0;
@@ -172,6 +200,7 @@ public class MainIterface extends javax.swing.JFrame {
                     + cantidadCapuccinos + "\nFecha: " + fechaFormateada, 
                     "Información", JOptionPane.INFORMATION_MESSAGE);
             soutListCP();
+            OverWriteFile();
         } catch (Exception e) {
             System.err.println("Error obteniendo los valores: " + e.getMessage());
             JOptionPane.showMessageDialog(this, "Error obteniendo los valores: " 
@@ -248,48 +277,45 @@ public class MainIterface extends javax.swing.JFrame {
     
     private void OverWriteFile(){ 
         String filePath = "src/Data/dataCappuccinos.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {          
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Separar la línea por comas
-                int cpR = 0, carry = 0, estado = 0,total = 0;
-                double toPay = 0.0;
-                String fecha = "";            
-                String[] values = line.split(",");
-
-                // Asignar los valores a las variables
-                fecha = values[0];
-                cpR = Integer.parseInt(values[1]);
-                carry = Integer.parseInt(values[2]);
-                total = Integer.parseInt(values[3]);
-                toPay = Double.parseDouble(values[4]);
-                estado = Integer.parseInt(values[5]);
-                // Imprimir los valores leídos
-               /*
-                System.out.println("Fecha: " + fecha);
-                System.out.println("cpR: " + cpR);
-                System.out.println("Carry: " + carry);
-                System.out.println("Total: " + total);
-                System.out.println("To Pay: " + toPay);
-                System.out.println("Estado: " + estado);
-                System.out.println("************************************");
-                */
-               // int cpR, int carry, int total, double totalPag, String fecha,int estado
-                Capuccino cpAdd = new Capuccino(cpR,carry,total,toPay,fecha,estado);
-                capuccinoList.add(cpAdd);                
+        try (FileWriter fileWriter = new FileWriter(filePath, false)) {
+            if (!capuccinoList.isEmpty()) {
+                for (int i = 0; i < capuccinoList.size(); i++) {
+                      Capuccino capu = capuccinoList.get(i);
+                      fileWriter.write(capu.toWriteFile());
+                }
             }
+            System.out.println("Archivo limpiado y sobrescrito con éxito.");
         } catch (IOException e) {
-            System.out.println("Error al leer el archivo" + e);
-        }           
+            System.err.println("Error al limpiar y sobrescribir el archivo: " + e.getMessage());
+        }     
     }
     
+    private void OpenShowTable(){ 
+            System.out.println("");
+            Inteface inter = new Inteface();
+            JFrame frame = new JFrame("Mostrar Capuccinos");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.add(inter);
+            frame.pack();  // Ajusta el tamaño del frame según el contenido
+            frame.setLocationRelativeTo(null);  // Centra el frame en la pantalla
+            frame.setVisible(true);
+            System.out.println("Showing Table");
+         
+      }
     
+    private void OpenEditaWindows(){ 
+        EditarFrame edit = new EditarFrame();
+        edit.setVisible(true);
+        edit.setLocationRelativeTo(null);
+    }
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> BoxEstado;
     private javax.swing.JButton ButtonAgregar;
+    private javax.swing.JMenuItem DashboaradMenu;
+    private javax.swing.JMenuItem EditarMenu;
     private javax.swing.JSpinner SpinnerCapuccinos;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
@@ -298,6 +324,5 @@ public class MainIterface extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
