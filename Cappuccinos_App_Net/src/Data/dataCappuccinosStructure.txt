@@ -1,0 +1,1 @@
+fecha,capuccinosRealizados,carry,total,totalPagar,estado(0,1) 

@@ -5,6 +5,7 @@
 package Interface;
 
 import Structures.Capuccino;
+import Structures.DataS;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -16,12 +17,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+
 /**
  *
  * @author PC
  */
 public class MainIterface extends javax.swing.JFrame {
-    public  ArrayList<Capuccino> capuccinoList = new ArrayList<>();
+    
+    public  ArrayList<Capuccino> capuccinoList = DataS.getInstance().cappuccinoList;
     /**
      * Creates new form MainIterface
      */
@@ -55,6 +58,7 @@ public class MainIterface extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         DashboaradMenu = new javax.swing.JMenuItem();
         EditarMenu = new javax.swing.JMenuItem();
+        MenuFaltantePago = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,6 +96,14 @@ public class MainIterface extends javax.swing.JFrame {
             }
         });
         jMenu1.add(EditarMenu);
+
+        MenuFaltantePago.setText("Faltante pago");
+        MenuFaltantePago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuFaltantePagoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuFaltantePago);
 
         jMenuBar1.add(jMenu1);
 
@@ -155,8 +167,13 @@ public class MainIterface extends javax.swing.JFrame {
 
     private void EditarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarMenuActionPerformed
         // TODO add your handling code here:
-        OpenEditaWindows();
+        OpenEditWindow();
     }//GEN-LAST:event_EditarMenuActionPerformed
+
+    private void MenuFaltantePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuFaltantePagoActionPerformed
+        // TODO add your handling code here:
+        OpenFaltantePagoWindow();
+    }//GEN-LAST:event_MenuFaltantePagoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -303,19 +320,51 @@ public class MainIterface extends javax.swing.JFrame {
          
       }
     
+    private void OpenEditWindow(){ 
+            System.out.println("");
+            EditWindow inter = new EditWindow();
+            JFrame frame = new JFrame("Editar Pago Capuccinos");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.add(inter);
+            frame.pack();  // Ajusta el tamaño del frame según el contenido
+            frame.setLocationRelativeTo(null);  // Centra el frame en la pantalla
+            frame.setVisible(true);
+            System.out.println("Showing Table");
+         
+      }   
+    
+    private void OpenFaltantePagoWindow(){ 
+            System.out.println("");
+            FaltantePagoWindow inter = new FaltantePagoWindow();
+            JFrame frame = new JFrame("Faltante Pago");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.add(inter);
+            frame.pack();  // Ajusta el tamaño del frame según el contenido
+            frame.setLocationRelativeTo(null);  // Centra el frame en la pantalla
+            frame.setVisible(true);
+            System.out.println("Showing Table");
+         
+      }    
+    
     private void OpenEditaWindows(){ 
         EditarFrame edit = new EditarFrame();
         edit.setVisible(true);
         edit.setLocationRelativeTo(null);
     }
     
-    
+     private void showTotalPagar(){ 
+     TotalPagar totalPagar = new TotalPagar();
+     totalPagar.setVisible(true);
+     totalPagar.setLocationRelativeTo(null);
+ }
+ 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> BoxEstado;
     private javax.swing.JButton ButtonAgregar;
     private javax.swing.JMenuItem DashboaradMenu;
     private javax.swing.JMenuItem EditarMenu;
+    private javax.swing.JMenuItem MenuFaltantePago;
     private javax.swing.JSpinner SpinnerCapuccinos;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

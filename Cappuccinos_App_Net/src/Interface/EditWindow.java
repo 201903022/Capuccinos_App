@@ -1,9 +1,8 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Interface;
-
 import Structures.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,25 +13,25 @@ import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author PC
  */
-public class EditarFrame extends javax.swing.JFrame {
- public ArrayList<Capuccino> capuccinoList = DataS.getInstance().cappuccinoList;
+public class EditWindow extends javax.swing.JPanel {
+     public ArrayList<Capuccino> capuccinoList = DataS.getInstance().cappuccinoList;
     /**
-     * Creates new form EditarFrame
-     * @param capuccinoList
+     * Creates new form EditWindow
      */
-    public EditarFrame() {
-        setTitle("Editar Cappuccino");
+    public EditWindow() {
         initComponents();
-        //leerData();
         showTable();
         addTableListener();
     }
-    private void showTable() {
+   
+    
+   private void showTable() {
         DefaultTableModel model = (DefaultTableModel) TableContenido.getModel();
         model.setRowCount(0); // Limpiar la tabla
 
@@ -50,7 +49,8 @@ public class EditarFrame extends javax.swing.JFrame {
             }
         }
     }
-    
+
+   
    private void leerData(){ 
         // cpR,  carry,  total,  totalPag,  fecha, estado
         String filePath = "src/Data/dataCappuccinos.txt";
@@ -96,7 +96,8 @@ public class EditarFrame extends javax.swing.JFrame {
         });
         System.out.println("Cambios Realizados");
     }   
-   private void EditarData(){ 
+    
+    private void EditarData(){ 
        
    }    
 
@@ -114,8 +115,7 @@ public class EditarFrame extends javax.swing.JFrame {
             System.err.println("Error al limpiar y sobrescribir el archivo: " + e.getMessage());
         }     
     }
-    
-   
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -131,8 +131,6 @@ public class EditarFrame extends javax.swing.JFrame {
         TableContenido = new javax.swing.JTable();
         ButtonCancel = new javax.swing.JButton();
         ButtonEdit = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         TableContenido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -179,12 +177,12 @@ public class EditarFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,10 +202,8 @@ public class EditarFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonCancel)
                     .addComponent(ButtonEdit))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelActionPerformed
@@ -217,22 +213,14 @@ public class EditarFrame extends javax.swing.JFrame {
 
     private void ButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEditActionPerformed
         // TODO add your handling code here:
-          int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea editar los cambios?", "Confirmar Edición",
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int response = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea editar los cambios?", "Confirmar Edición",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         // Si el usuario selecciona "Sí", realizar la sobrescritura del archivo
-           if (response == JOptionPane.YES_OPTION) {
-                OverWriteFile();
-            }
+        if (response == JOptionPane.YES_OPTION) {
+            OverWriteFile();
+        }
     }//GEN-LAST:event_ButtonEditActionPerformed
 
-    
-
-    
-
- 
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonCancel;

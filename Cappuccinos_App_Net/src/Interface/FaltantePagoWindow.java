@@ -1,14 +1,11 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Interface;
 
 import Structures.Capuccino;
 import Structures.DataS;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,18 +13,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author PC
  */
-public class TotalPagar extends javax.swing.JFrame {
-   public ArrayList<Capuccino> capuccinoList = DataS.getInstance().cappuccinoList;
+public class FaltantePagoWindow extends javax.swing.JPanel {
+    public ArrayList<Capuccino> capuccinoList = DataS.getInstance().cappuccinoList;
     /**
-     * Creates new form TotalPagar
+     * Creates new form FaltantePagoWindow
      */
-    public TotalPagar() {
-        setTitle("Flatante de Pago: ");
+    public FaltantePagoWindow() {
         initComponents();
-      //  leerData();
         showTable();
     }
 
+    
   private void showTable() {
     DefaultTableModel model = (DefaultTableModel) TableContenido.getModel();
     model.setRowCount(0); // Limpiar la tabla
@@ -52,50 +48,6 @@ public class TotalPagar extends javax.swing.JFrame {
      }
       System.out.println("Total a Pagar: " +String.format("Q.%.2f", totalPagar));
 }
-    
- private void leerData(){ 
-        // cpR,  carry,  total,  totalPag,  fecha, estado
-        String filePath = "src/Data/dataCappuccinos.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {          
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Separar la línea por comas
-                int cpR = 0, carry = 0, estado = 0,total = 0;
-                double toPay = 0.0;
-                String fecha = "";            
-                String[] values = line.split(",");
-
-                // Asignar los valores a las variables
-                fecha = values[0];
-                cpR = Integer.parseInt(values[1]);
-                carry = Integer.parseInt(values[2]);
-                total = Integer.parseInt(values[3]);
-                toPay = Double.parseDouble(values[4]);
-                estado = Integer.parseInt(values[5]) ;
-                // Imprimir los valores leídos
-               /*
-                System.out.println("Fecha: " + fecha);
-                System.out.println("cpR: " + cpR);
-                System.out.println("Carry: " + carry);
-                System.out.println("Total: " + total);
-                System.out.println("To Pay: " + toPay);
-                System.out.println("Estado: " + estado);
-                System.out.println("************************************");
-                */
-               // int cpR, int carry, int total, double totalPag, String fecha,int estado
-                Capuccino cpAdd = new Capuccino(cpR,carry,total,toPay,fecha,estado);
-                capuccinoList.add(cpAdd);                
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo" + e);
-        }         
-    }
-    
- 
-    
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,8 +60,6 @@ public class TotalPagar extends javax.swing.JFrame {
         scrollPane1 = new java.awt.ScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableContenido = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         TableContenido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -132,26 +82,23 @@ public class TotalPagar extends javax.swing.JFrame {
 
         scrollPane1.add(jScrollPane1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
